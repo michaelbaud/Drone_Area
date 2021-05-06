@@ -24,13 +24,6 @@ body {
 h1, h2 {
   text-align: center;
   color: var(--dark-grey-color);
-
-}
-h1 {
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-h2 {
   margin-top: 30px;
   margin-bottom: 30px;
 }
@@ -47,15 +40,17 @@ div#map * {
 
 /* Footer */
 .footer {
-  background-color: #5d8cbe;
-  margin: auto;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--blue-color);
+  width: 100%;
   max-width: 1000px;
   text-align: center;
-  color: var(--white-color);
   line-height: 2.3rem;
   border-radius: 10px 10px 0 0;
   padding: 20px 10px;
-  margin-top: 30px;
 }
 .footer a {
   text-decoration: none;
@@ -90,3 +85,13 @@ div#map * {
   to {transform: rotate(360deg);}
 }
 /* End Loader */
+
+/* Media Queries */
+@media screen and (max-height: 700px) {
+  .footer {
+    position: static;
+    transform: unset;
+    width: calc(100% - 20px);
+    margin: auto;
+  }
+}
