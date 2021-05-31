@@ -1,0 +1,78 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed&display=swap');
+
+:root {
+  --white-color: #fafafa;
+  --light-grey-color: #f7f4f4;
+  --blue-color: #4f78a4;
+  --dark-grey-color: #363636;
+}
+
+/* General */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+body {
+  background-color: var(--light-grey-color);
+  font-size: 1rem;
+}
+.App {
+  margin: 0 8px;
+}
+h1, h2 {
+  text-align: center;
+  color: var(--dark-grey-color);
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+/* End General */
+
+/* Map */
+.mapBoxContainer {
+  margin-top: 40px;
+}
+div#map * {
+  border: none !important;
+}
+/* End Map */
+
+/* Footer */
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--blue-color);
+  width: 100%;
+  max-width: 1000px;
+  text-align: center;
+  line-height: 2.3rem;
+  border-radius: 10px 10px 0 0;
+  padding: 20px 10px;
+}
+.footer a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.footer div, .footer a, .footer .footerLogo {
+  color: var(--white-color);
+}
+.footer .footerLogo {
+  position: relative;
+  margin-bottom: -6px;
+  margin-right: 5px;
+}
+/* End Footer */
+
+/* Media Queries */
+@media screen and (max-height: 700px) {
+  .footer {
+    position: static;
+    transform: unset;
+    width: calc(100% - 20px);
+    margin: auto;
+  }
+}
