@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import L from "leaflet"
+import { isPointInPolygon } from 'geolib'
+import swal from 'sweetalert'
 
-import Loader from './Loader'
-
-const { REACT_APP_KEY } = process.env
+// Restricted areas
+import geojsonAreas from'../geoJson/area1.geojson'
 
 const style = {
     width: "100%",
@@ -12,34 +14,90 @@ const style = {
     borderRadius: "10px",
 }
 
-const Map = ({ id, options, onMapLoad }) => {
+let map = null
+let markerLayer = null
+let rayonLayer = null
 
-    const [isLoading, setIsLoading] = useState(true)
+const Map = () => {
 
-    const onScriptLoad = () => {
-        const map = new window.google.maps.Map(document.getElementById(id), options)
-        onMapLoad(map)
+    const [position, setPosition] = useState([48.983967, 2.618397])
+    const [rayon] = useState(10)
+    const [zoom] = useState(10)
+    const [firstRendering, setFirstRendering] = useState(true)
+
+    const renderMap = () => map = new L.map('map')
+
+    const setLayer = () => L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(map)
+
+    const addMarker = pos => {
+        markerLayer = new L.marker(pos)
+        map.addLayer(markerLayer)
     }
 
+    const addRayon = pos => {
+        rayonLayer = L.circle(pos, { radius: rayon })
+        map.addLayer(rayonLayer)
+    }
+
+    const renderRestrictedAreas = geojsonFeature => {
+        let polygonLayer = L.geoJSON(geojsonFeature, { color: 'red', weight: '2'})
+        map.addLayer(polygonLayer)
+    }
+
+    const isInsideRestrictedArea = e => {
+        setPosition([e.latlng.lat, e.latlng.lng])
+        let bool = false
+        let targetedArea = null
+        for(let i = 0; i < geojsonAreas.features.length; i++) {
+            if(isPointInPolygon([e.latlng.lng, e.latlng.lat], geojsonAreas.features[i].geometry.coordinates[0])) {
+                bool = true
+                targetedArea = geojsonAreas.features[i].properties.name
+            }
+        }
+        bool && swal({
+            title: "Attention",
+            text: `Le drone se situe dans la zone interdite au vol: ${targetedArea}`,
+            icon: "warning",
+            dangerMode: true,
+        })
+        
+    }
+
+    
+    
     useEffect(() => {
-        if (!window.google) {
-            var s = document.createElement('script')
-            s.type = 'text/javascript'
-            s.src = `https://maps.google.com/maps/api/js?key=${REACT_APP_KEY}`
-            var x = document.getElementsByTagName('script')[0]
-            x.parentNode.insertBefore(s, x)
-            s.addEventListener('load', () => {
-                onScriptLoad()
-            })
-            setIsLoading(false)
+
+        if (firstRendering) {
+            renderMap()
+            setLayer()
+            map.setView(position, zoom)
+            renderRestrictedAreas(geojsonAreas)
+            map.on('click', isInsideRestrictedArea)
+            setFirstRendering(false)
+            return
+        } else {
+            if (markerLayer !== null) {
+                console.log('test')
+                map.removeLayer(markerLayer)
+                map.removeLayer(rayonLayer)
+                map.setView(position, zoom)
+                addMarker(position)
+                addRayon(position)
+            } else {
+                console.log('test2')
+                map.setView(position, zoom)
+                addMarker(position)
+                addRayon(position)
+            }
+            
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [position, rayon, zoom])
+
 
     return (
         <div className="mapBoxContainer">
-            {isLoading ? <Loader /> : null}
-            <div style={style} id={id} />
+            <div id="map" style={style} />
         </div>
     )
 }
