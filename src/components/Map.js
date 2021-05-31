@@ -4,6 +4,7 @@ import { isPointInPolygon } from 'geolib'
 import swal from 'sweetalert'
 
 // Restricted areas
+
 import geojsonAreas from'../geoJson/restrictedAreas.geojson'
 
 const style = {
