@@ -67,25 +67,6 @@ div#map * {
 }
 /* End Footer */
 
-/* Loader */
-.loaderContainer {
-  margin: 3rem 0;
-  width: 100%;
-}
-.faSpinner--container {
-  display: flex;
-}
-.faSpinner {
-  color: var(--blue-color);
-  font-size: 4rem;
-  animation: spinner 1.3s steps(9) infinite;
-  margin: auto;
-}
-@keyframes spinner {
-  to {transform: rotate(360deg);}
-}
-/* End Loader */
-
 /* Media Queries */
 @media screen and (max-height: 700px) {
   .footer {

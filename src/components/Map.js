@@ -62,8 +62,6 @@ const Map = () => {
         })
         
     }
-
-    
     
     useEffect(() => {
 
@@ -93,7 +91,6 @@ const Map = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [position, rayon, zoom])
-
 
     return (
         <div className="mapBoxContainer">
