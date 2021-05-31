@@ -51,6 +51,7 @@ div#map * {
   line-height: 2.3rem;
   border-radius: 10px 10px 0 0;
   padding: 20px 10px;
+  box-sizing: border-box;
 }
 .footer a {
   text-decoration: none;
